@@ -80,6 +80,8 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
     private static final String RELEASE_PATTERN_LAYOUT = "/core/opensearch/[revision]/[module]-min-[revision](-[classifier]).[ext]";
     private static final String SNAPSHOT_PATTERN_LAYOUT =
         "/snapshots/core/opensearch/[revision]/[module]-min-[revision](-[classifier])-latest.[ext]";
+    private static final String CI_SNAPSHOT_PATTERN =
+        "/pgodithi-distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
 
     private NamedDomainObjectContainer<OpenSearchDistribution> distributionsContainer;
     private NamedDomainObjectContainer<DistributionResolution> distributionsResolutionStrategiesContainer;
@@ -204,12 +206,15 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
             addIvyRepo(
                 project,
                 DOWNLOAD_REPO_NAME,
-                "https://artifacts.opensearch.org",
+//                "https://artifacts.opensearch.org",
+                "https://ci.opensearch.org",
                 FAKE_IVY_GROUP,
+                "/ci/dbc" + CI_SNAPSHOT_PATTERN,
                 "/releases" + RELEASE_PATTERN_LAYOUT,
                 "/release-candidates" + RELEASE_PATTERN_LAYOUT
             );
-            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://artifacts.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, SNAPSHOT_PATTERN_LAYOUT);
+            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_SNAPSHOT_PATTERN);
+//            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://artifacts.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, SNAPSHOT_PATTERN_LAYOUT);
         }
 
         addIvyRepo2(project, DOWNLOAD_REPO_NAME_ES, "https://artifacts-no-kpi.elastic.co", FAKE_IVY_GROUP_ES);
