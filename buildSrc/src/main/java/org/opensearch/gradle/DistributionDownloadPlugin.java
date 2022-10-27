@@ -203,29 +203,30 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
 //        if (stagingBucket != null && (Boolean) stagingBucket) {
 //
 //        }
-//        String URL = (Boolean) stagingBucket ? "https://artifacts.opensearch.org" : "https://ci.opensearch.org";
-//        String...
+        String URL = (stagingBucket != null && (Boolean) stagingBucket) ? "https://artifacts.opensearch.org" : "https://ci.opensearch.org";
+        String[] patterns = (stagingBucket != null && (Boolean) stagingBucket) ?
+            new String[]{"/ci/dbc" + CI_SNAPSHOT_PATTERN} :
+            new String[]{"/releases" + RELEASE_PATTERN_LAYOUT, "/release-candidates" + RELEASE_PATTERN_LAYOUT};
         if (customDistributionUrl != null) {
             addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrl.toString(), FAKE_IVY_GROUP, "");
             addIvyRepo(project, SNAPSHOT_REPO_NAME, customDistributionUrl.toString(), FAKE_SNAPSHOT_IVY_GROUP, "");
         } else {
-//            addIvyRepo(
-//                project,
-//                DOWNLOAD_REPO_NAME,
-//                "https://artifacts.opensearch.org",
-//                FAKE_IVY_GROUP,
-//                "/releases" + RELEASE_PATTERN_LAYOUT,
-//                "/release-candidates" + RELEASE_PATTERN_LAYOUT
-//            );
             addIvyRepo(
                 project,
                 DOWNLOAD_REPO_NAME,
-                "https://ci.opensearch.org",
+                URL,
                 FAKE_IVY_GROUP,
-                "/ci/dbc" + CI_SNAPSHOT_PATTERN
+                patterns
             );
-            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_SNAPSHOT_PATTERN);
-//            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://artifacts.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, SNAPSHOT_PATTERN_LAYOUT);
+//            addIvyRepo(
+//                project,
+//                DOWNLOAD_REPO_NAME,
+//                "https://ci.opensearch.org",
+//                FAKE_IVY_GROUP,
+//                "/ci/dbc" + CI_SNAPSHOT_PATTERN
+//            );
+//            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_SNAPSHOT_PATTERN);
+            addIvyRepo(project, SNAPSHOT_REPO_NAME, URL, FAKE_SNAPSHOT_IVY_GROUP, SNAPSHOT_PATTERN_LAYOUT);
         }
 
         addIvyRepo2(project, DOWNLOAD_REPO_NAME_ES, "https://artifacts-no-kpi.elastic.co", FAKE_IVY_GROUP_ES);
