@@ -203,9 +203,9 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
 //        if (stagingBucket != null && (Boolean) stagingBucket) {
 //
 //        }
-        String URL = (stagingBucket != null && (Boolean) stagingBucket) ? "https://artifacts.opensearch.org" : "https://ci.opensearch.org";
+        String URL = (stagingBucket != null && (Boolean) stagingBucket) ? "https://ci.opensearch.org": "https://artifacts.opensearch.org";
         String[] patterns = (stagingBucket != null && (Boolean) stagingBucket) ?
-            new String[]{"/ci/dbc" + CI_SNAPSHOT_PATTERN} :
+            new String[]{"/ci/dbc" + CI_SNAPSHOT_PATTERN}:
             new String[]{"/releases" + RELEASE_PATTERN_LAYOUT, "/release-candidates" + RELEASE_PATTERN_LAYOUT};
         if (customDistributionUrl != null) {
             addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrl.toString(), FAKE_IVY_GROUP, "");
