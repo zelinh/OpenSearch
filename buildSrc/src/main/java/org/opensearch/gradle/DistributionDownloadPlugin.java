@@ -203,7 +203,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
 //        if (stagingBucket != null && (Boolean) stagingBucket) {
 //
 //        }
-        boolean bundleBoolean = (stagingBucket != null) ? (Boolean) stagingBucket : false;
+        boolean bundleBoolean = stagingBucket != null && Boolean.parseBoolean(stagingBucket.toString());
         String URL = (bundleBoolean) ? "https://ci.opensearch.org": "https://artifacts.opensearch.org";
         String[] patterns = (bundleBoolean) ?
             new String[]{"/ci/dbc" + CI_SNAPSHOT_PATTERN}:
