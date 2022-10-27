@@ -209,14 +209,14 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
             addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrl.toString(), FAKE_IVY_GROUP, "");
             addIvyRepo(project, SNAPSHOT_REPO_NAME, customDistributionUrl.toString(), FAKE_SNAPSHOT_IVY_GROUP, "");
         } else {
-            addIvyRepo(
-                project,
-                DOWNLOAD_REPO_NAME,
-                "https://artifacts.opensearch.org",
-                FAKE_IVY_GROUP,
-                "/releases" + RELEASE_PATTERN_LAYOUT,
-                "/release-candidates" + RELEASE_PATTERN_LAYOUT
-            );
+//            addIvyRepo(
+//                project,
+//                DOWNLOAD_REPO_NAME,
+//                "https://artifacts.opensearch.org",
+//                FAKE_IVY_GROUP,
+//                "/releases" + RELEASE_PATTERN_LAYOUT,
+//                "/release-candidates" + RELEASE_PATTERN_LAYOUT
+//            );
             addIvyRepo(
                 project,
                 DOWNLOAD_REPO_NAME,
@@ -225,7 +225,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
                 "/ci/dbc" + CI_SNAPSHOT_PATTERN
             );
             addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_SNAPSHOT_PATTERN);
-            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://artifacts.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, SNAPSHOT_PATTERN_LAYOUT);
+//            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://artifacts.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, SNAPSHOT_PATTERN_LAYOUT);
         }
 
         addIvyRepo2(project, DOWNLOAD_REPO_NAME_ES, "https://artifacts-no-kpi.elastic.co", FAKE_IVY_GROUP_ES);
