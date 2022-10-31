@@ -198,6 +198,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
             return;
         }
         Object customDistributionUrls = project.findProperty("customDistributionUrls");
+        System.out.println("*************Project_version is*********************" + project.getVersion());
 //        Object stagingBucket = project.findProperty("stagingBucket");
         // checks if custom Distribution Url has been passed by user from plugins
 //        boolean bundleBoolean = stagingBucket != null && Boolean.parseBoolean(stagingBucket.toString());
