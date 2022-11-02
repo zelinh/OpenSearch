@@ -197,15 +197,21 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         if (project.getRepositories().findByName(DOWNLOAD_REPO_NAME) != null) {
             return;
         }
-        Object customDistributionUrls = project.findProperty("customDistributionUrls");
-        System.out.println("*************Project_version is*********************" + project.getVersion().toString());
-        System.out.println("*************Project is*********************" + project.getProperties().toString());
-        System.out.println("*************Project is*********************" + project.getProperties());
-        System.out.println("*************Project is*********************" + project);
-//        System.out.println("*************Project_version is*********************" + project.getVersion());
-//        Object stagingBucket = project.findProperty("stagingBucket");
+        Object customDistributionUrls = project.findProperty("customDistributionUrl");
+        Object bundleDownload = project.findProperty("bundleDownload");
         // checks if custom Distribution Url has been passed by user from plugins
-//        boolean bundleBoolean = stagingBucket != null && Boolean.parseBoolean(stagingBucket.toString());
+        boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
+        if (bundleBoolean) {
+            addIvyRepo(
+                project,
+                DOWNLOAD_REPO_NAME,
+                "https://ci.opensearch.org",
+                FAKE_IVY_GROUP,
+                "/ci/dbc" + CI_SNAPSHOT_PATTERN
+            );
+            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_SNAPSHOT_PATTERN);
+            return;
+        }
 //        String URL = (bundleBoolean) ? "https://ci.opensearch.org": "https://artifacts.opensearch.org";
 //        String[] patterns = (bundleBoolean) ?
 //            new String[]{"/ci/dbc" + CI_SNAPSHOT_PATTERN}:
@@ -213,12 +219,6 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         if (customDistributionUrls != null) {
             addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrls.toString(), FAKE_IVY_GROUP, "");
             addIvyRepo(project, SNAPSHOT_REPO_NAME, customDistributionUrls.toString(), FAKE_SNAPSHOT_IVY_GROUP, "");
-//            for (String customDistributionUrl : customDistributionUrls.toString().split(",")) {
-////                if (customDistributionUrl.contains(setup_version)) {
-//                    addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrl, FAKE_IVY_GROUP, "");
-//                    addIvyRepo(project, SNAPSHOT_REPO_NAME, customDistributionUrl, FAKE_SNAPSHOT_IVY_GROUP, "");
-////                }
-//            }
         } else {
             addIvyRepo(
                 project,
@@ -229,15 +229,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
                 "/release-candidates" + RELEASE_PATTERN_LAYOUT
             );
             addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://artifacts.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, SNAPSHOT_PATTERN_LAYOUT);
-        }//            addIvyRepo(
-//                project,
-//                DOWNLOAD_REPO_NAME,
-//                "https://ci.opensearch.org",
-//                FAKE_IVY_GROUP,
-//                "/ci/dbc" + CI_SNAPSHOT_PATTERN
-//            );
-//            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_SNAPSHOT_PATTERN);
-
+        }
         addIvyRepo2(project, DOWNLOAD_REPO_NAME_ES, "https://artifacts-no-kpi.elastic.co", FAKE_IVY_GROUP_ES);
         addIvyRepo2(project, SNAPSHOT_REPO_NAME_ES, "https://snapshots-no-kpi.elastic.co", FAKE_SNAPSHOT_IVY_GROUP_ES);
     }
