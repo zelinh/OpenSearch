@@ -197,10 +197,11 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         if (project.getRepositories().findByName(DOWNLOAD_REPO_NAME) != null) {
             return;
         }
-        Object customDistributionUrls = project.findProperty("customDistributionUrl");
+        Object customDistributionUrl = project.findProperty("customDistributionUrl");
         Object bundleDownload = project.findProperty("bundleDownload");
         // checks if custom Distribution Url has been passed by user from plugins
         boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
+        System.out.println("********************************Bundle Boolean is*****************" + bundleBoolean);
         if (bundleBoolean) {
             addIvyRepo(
                 project,
@@ -216,9 +217,9 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
 //        String[] patterns = (bundleBoolean) ?
 //            new String[]{"/ci/dbc" + CI_SNAPSHOT_PATTERN}:
 //            new String[]{"/releases" + RELEASE_PATTERN_LAYOUT, "/release-candidates" + RELEASE_PATTERN_LAYOUT};
-        if (customDistributionUrls != null) {
-            addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrls.toString(), FAKE_IVY_GROUP, "");
-            addIvyRepo(project, SNAPSHOT_REPO_NAME, customDistributionUrls.toString(), FAKE_SNAPSHOT_IVY_GROUP, "");
+        if (customDistributionUrl != null) {
+            addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrl.toString(), FAKE_IVY_GROUP, "");
+            addIvyRepo(project, SNAPSHOT_REPO_NAME, customDistributionUrl.toString(), FAKE_SNAPSHOT_IVY_GROUP, "");
         } else {
             addIvyRepo(
                 project,
