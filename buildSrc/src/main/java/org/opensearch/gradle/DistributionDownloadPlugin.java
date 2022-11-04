@@ -202,7 +202,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         Object bundleDownload = project.findProperty("bundleDownload");
         // checks if custom Distribution Url has been passed by user from plugins
         boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
-        System.out.println("********************************Bundle Boolean is*****************" + bundleBoolean);
+//        System.out.println("********************************Bundle Boolean is*****************" + bundleBoolean);
         if (bundleBoolean) {
             addIvyRepo(
                 project,
