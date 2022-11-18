@@ -80,9 +80,8 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
     private static final String RELEASE_PATTERN_LAYOUT = "/core/opensearch/[revision]/[module]-min-[revision](-[classifier]).[ext]";
     private static final String SNAPSHOT_PATTERN_LAYOUT =
         "/snapshots/core/opensearch/[revision]/[module]-min-[revision](-[classifier])-latest.[ext]";
-    private static final String CI_SNAPSHOT_PATTERN =
+    private static final String CI_BUNDLE_PATTERN =
         "/distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
-//        "/pgodithi-distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
 
     private NamedDomainObjectContainer<OpenSearchDistribution> distributionsContainer;
     private NamedDomainObjectContainer<DistributionResolution> distributionsResolutionStrategiesContainer;
@@ -200,24 +199,19 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         }
         Object customDistributionUrl = project.findProperty("customDistributionUrl");
         Object bundleDownload = project.findProperty("bundleDownload");
-        // checks if custom Distribution Url has been passed by user from plugins
         boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
-//        System.out.println("********************************Bundle Boolean is*****************" + bundleBoolean);
         if (bundleBoolean) {
             addIvyRepo(
                 project,
                 DOWNLOAD_REPO_NAME,
                 "https://ci.opensearch.org",
                 FAKE_IVY_GROUP,
-                "/ci/dbc" + CI_SNAPSHOT_PATTERN
+                "/ci/dbc" + CI_BUNDLE_PATTERN
             );
-            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_SNAPSHOT_PATTERN);
+            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_BUNDLE_PATTERN);
             return;
         }
-//        String URL = (bundleBoolean) ? "https://ci.opensearch.org": "https://artifacts.opensearch.org";
-//        String[] patterns = (bundleBoolean) ?
-//            new String[]{"/ci/dbc" + CI_SNAPSHOT_PATTERN}:
-//            new String[]{"/releases" + RELEASE_PATTERN_LAYOUT, "/release-candidates" + RELEASE_PATTERN_LAYOUT};
+        // checks if custom Distribution Url has been passed by user from plugins
         if (customDistributionUrl != null) {
             addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrl.toString(), FAKE_IVY_GROUP, "");
             addIvyRepo(project, SNAPSHOT_REPO_NAME, customDistributionUrl.toString(), FAKE_SNAPSHOT_IVY_GROUP, "");
