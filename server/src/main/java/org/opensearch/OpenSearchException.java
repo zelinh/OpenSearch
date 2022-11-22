@@ -69,6 +69,7 @@ import static java.util.Collections.singletonMap;
 import static java.util.Collections.unmodifiableMap;
 import static org.opensearch.Version.V_2_1_0;
 import static org.opensearch.Version.V_2_3_0;
+import static org.opensearch.Version.V_2_4_0;
 import static org.opensearch.cluster.metadata.IndexMetadata.INDEX_UUID_NA_VALUE;
 import static org.opensearch.common.xcontent.XContentParserUtils.ensureExpectedToken;
 import static org.opensearch.common.xcontent.XContentParserUtils.ensureFieldName;
@@ -594,16 +595,14 @@ public class OpenSearchException extends RuntimeException implements ToXContentF
 
         // Render the exception with a simple message
         if (detailed == false) {
-            String message = "No OpenSearchException found";
             Throwable t = e;
             for (int counter = 0; counter < 10 && t != null; counter++) {
                 if (t instanceof OpenSearchException) {
-                    message = t.getClass().getSimpleName() + "[" + t.getMessage() + "]";
                     break;
                 }
                 t = t.getCause();
             }
-            builder.field(ERROR, message);
+            builder.field(ERROR, ExceptionsHelper.summaryMessage(t != null ? t : e));
             return;
         }
 
@@ -1608,6 +1607,18 @@ public class OpenSearchException extends RuntimeException implements ToXContentF
             org.opensearch.index.shard.PrimaryShardClosedException::new,
             162,
             V_2_3_0
+        ),
+        DECOMMISSIONING_FAILED_EXCEPTION(
+            org.opensearch.cluster.decommission.DecommissioningFailedException.class,
+            org.opensearch.cluster.decommission.DecommissioningFailedException::new,
+            163,
+            V_2_4_0
+        ),
+        NODE_DECOMMISSIONED_EXCEPTION(
+            org.opensearch.cluster.decommission.NodeDecommissionedException.class,
+            org.opensearch.cluster.decommission.NodeDecommissionedException::new,
+            164,
+            V_2_4_0
         );
 
         final Class<? extends OpenSearchException> exceptionClass;
