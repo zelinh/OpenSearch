@@ -202,20 +202,23 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         Object bundleDownload = project.findProperty("bundleDownload");
         boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
         if (bundleBoolean) {
-            addIvyRepo(
-                project,
-                DOWNLOAD_REPO_NAME,
-                "https://artifacts.opensearch.org",
-                FAKE_IVY_GROUP,
-                "/releases" + RELEASE_BUNDLE_PATTERN
-            );
-            addIvyRepo(
-                project,
-                DOWNLOAD_REPO_NAME,
-                "https://ci.opensearch.org",
-                FAKE_IVY_GROUP,
-                "/ci/dbc" + CI_BUNDLE_PATTERN
-            );
+            try {
+                addIvyRepo(
+                    project,
+                    DOWNLOAD_REPO_NAME,
+                    "https://artifacts.opensearch.org",
+                    FAKE_IVY_GROUP,
+                    "/releases" + RELEASE_BUNDLE_PATTERN
+                );
+            } catch (Exception ex) {
+                addIvyRepo(
+                    project,
+                    DOWNLOAD_REPO_NAME,
+                    "https://ci.opensearch.org",
+                    FAKE_IVY_GROUP,
+                    "/ci/dbc" + CI_BUNDLE_PATTERN
+                );
+            }
             addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_BUNDLE_PATTERN);
             return;
         }
