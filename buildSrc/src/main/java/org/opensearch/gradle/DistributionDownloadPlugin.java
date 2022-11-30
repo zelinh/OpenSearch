@@ -82,7 +82,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         "/snapshots/core/opensearch/[revision]/[module]-min-[revision](-[classifier])-latest.[ext]";
     private static final String CI_BUNDLE_PATTERN =
         "/distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
-    private static final String RELEASE_BUNDLE_PATTERN = "/bundle/opensearch/[revision]/[module]-[revision](-[classifier]).[ext]"
+    private static final String RELEASE_BUNDLE_PATTERN = "/bundle/opensearch/[revision]/[module]-[revision](-[classifier]).[ext]";
 
     private NamedDomainObjectContainer<OpenSearchDistribution> distributionsContainer;
     private NamedDomainObjectContainer<DistributionResolution> distributionsResolutionStrategiesContainer;
