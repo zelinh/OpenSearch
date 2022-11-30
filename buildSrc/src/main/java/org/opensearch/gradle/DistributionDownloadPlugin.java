@@ -82,6 +82,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         "/snapshots/core/opensearch/[revision]/[module]-min-[revision](-[classifier])-latest.[ext]";
     private static final String CI_BUNDLE_PATTERN =
         "/distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
+    private static final String RELEASE_BUNDLE_PATTERN = "/bundle/opensearch/[revision]/[module]-[revision](-[classifier]).[ext]"
 
     private NamedDomainObjectContainer<OpenSearchDistribution> distributionsContainer;
     private NamedDomainObjectContainer<DistributionResolution> distributionsResolutionStrategiesContainer;
@@ -204,10 +205,17 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
             addIvyRepo(
                 project,
                 DOWNLOAD_REPO_NAME,
-                "https://ci.opensearch.org",
+                "https://artifacts.opensearch.org",
                 FAKE_IVY_GROUP,
-                "/ci/dbc" + CI_BUNDLE_PATTERN
+                "/releases" + RELEASE_BUNDLE_PATTERN
             );
+//            addIvyRepo(
+//                project,
+//                DOWNLOAD_REPO_NAME,
+//                "https://ci.opensearch.org",
+//                FAKE_IVY_GROUP,
+//                "/ci/dbc" + CI_BUNDLE_PATTERN
+//            );
             addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_BUNDLE_PATTERN);
             return;
         }
