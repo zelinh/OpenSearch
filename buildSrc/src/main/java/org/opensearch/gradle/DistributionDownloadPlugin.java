@@ -202,7 +202,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         Object bundleDownload = project.findProperty("bundleDownload");
         boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
         if (bundleBoolean) {
-
+            System.out.println("***********************************************" + project.getVersion());
             addIvyRepo(
                 project,
                 DOWNLOAD_REPO_NAME,
