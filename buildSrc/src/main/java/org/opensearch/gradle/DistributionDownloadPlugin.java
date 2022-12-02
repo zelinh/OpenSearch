@@ -203,6 +203,9 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
         if (bundleBoolean) {
             System.out.println("***********************************************" + project.getVersion());
+            System.out.println("***********************************************" + project.toString());
+            System.out.println("***********************************************" + project.getVersion());
+
             addIvyRepo(
                 project,
                 DOWNLOAD_REPO_NAME,
