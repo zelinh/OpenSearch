@@ -214,7 +214,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
                 DOWNLOAD_REPO_NAME,
                 "https://artifacts.opensearch.org",
                 FAKE_IVY_GROUP,
-                "/release" + RELEASE_BUNDLE_PATTERN
+                "/releases" + RELEASE_BUNDLE_PATTERN
             );
             addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_BUNDLE_PATTERN);
             return;
