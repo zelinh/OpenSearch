@@ -339,7 +339,15 @@ public class OpenSearchNode implements TestClusterConfiguration {
         System.out.println("*************************versionSet*************" + version);
         System.out.println("*************************projectproperties***************" + this.project.findProperty("bundleDownload"));
         OpenSearchDistribution distro = container.getByName(distroName);
-        distro.setVersion(version);
+        Object bundleDownload = project.findProperty("bundleDownload");
+        boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
+        if (bundleBoolean) {
+            String nonsnapshotVersion = version.replace("-SNAPSHOT", "");
+            System.out.println("*************************nonsnapshotVersion***************" + nonsnapshotVersion);
+            distro.setVersion(nonsnapshotVersion);
+        } else {
+            distro.setVersion(version);
+        }
         distro.setArchitecture(Architecture.current());
         setDistributionType(distro, testDistribution);
         distributions.add(distro);
