@@ -169,7 +169,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
 
     private static void addIvyRepo(Project project, String name, String url, String group, String... patternLayout) {
         System.out.println("*********************version**************************" + project.getVersion());
-        System.out.println("******************patternLayout*****************************" + patternLayout.toString());
+        System.out.println("******************patternLayout*****************************" + patternLayout[0]);
         System.out.println("*****************Repository******************************" + project.getRepositories());
         System.out.println("*******************dependencies****************************" + project.getDependencies());
         final List<IvyArtifactRepository> repos = Arrays.stream(patternLayout).map(pattern -> project.getRepositories().ivy(repo -> {
