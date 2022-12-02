@@ -168,9 +168,10 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
     }
 
     private static void addIvyRepo(Project project, String name, String url, String group, String... patternLayout) {
-        System.out.println("***********************************************" + project.getVersion());
-        System.out.println("***********************************************" + patternLayout.toString());
-        System.out.println("***********************************************" + project.getRepositories());
+        System.out.println("*********************version**************************" + project.getVersion());
+        System.out.println("******************patternLayout*****************************" + patternLayout.toString());
+        System.out.println("*****************Repository******************************" + project.getRepositories());
+        System.out.println("*******************dependencies****************************" + project.getDependencies());
         final List<IvyArtifactRepository> repos = Arrays.stream(patternLayout).map(pattern -> project.getRepositories().ivy(repo -> {
             repo.setName(name);
             repo.setUrl(url);
@@ -205,9 +206,9 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         Object bundleDownload = project.findProperty("bundleDownload");
         boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
         if (bundleBoolean) {
-            System.out.println("***********************************************" + project.getVersion());
-            System.out.println("***********************************************" + project.toString());
-
+            System.out.println("********************Version***************************" + project.getVersion());
+            System.out.println("*******************project****************************" + project.toString());
+            System.out.println("*******************dependencies****************************" + project.getDependencies());
             addIvyRepo(
                 project,
                 DOWNLOAD_REPO_NAME,
