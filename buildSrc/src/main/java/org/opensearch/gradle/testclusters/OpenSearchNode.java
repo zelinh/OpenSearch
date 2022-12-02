@@ -331,10 +331,13 @@ public class OpenSearchNode implements TestClusterConfiguration {
 
     private void doSetVersion(String version) {
         String distroName = "testclusters" + path.replace(":", "-") + "-" + this.name + "-" + version + "-";
+        System.out.println("*************************distroName" + distroName);
         NamedDomainObjectContainer<OpenSearchDistribution> container = DistributionDownloadPlugin.getContainer(project);
         if (container.findByName(distroName) == null) {
             container.create(distroName);
         }
+        System.out.println("*************************versionSet" + version);
+        System.out.println("*************************projectproperties" + this.project.findProperty("bundleDownload"));
         OpenSearchDistribution distro = container.getByName(distroName);
         distro.setVersion(version);
         distro.setArchitecture(Architecture.current());

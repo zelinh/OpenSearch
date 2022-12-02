@@ -134,7 +134,6 @@ public class OpenSearchDistribution implements Buildable, Iterable<File> {
     }
 
     public void setVersion(String version) {
-        System.out.println("****************************SetVersion is " + version);
         Version.fromString(version); // ensure the version parses, but don't store as Version since that removes -SNAPSHOT
         this.version.set(version);
     }
