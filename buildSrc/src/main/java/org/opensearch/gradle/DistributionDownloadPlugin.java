@@ -80,11 +80,11 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
     private static final String RELEASE_PATTERN_LAYOUT = "/core/opensearch/[revision]/[module]-min-[revision](-[classifier]).[ext]";
     private static final String SNAPSHOT_PATTERN_LAYOUT =
         "/snapshots/core/opensearch/[revision]/[module]-min-[revision](-[classifier])-latest.[ext]";
-//    private static final String CI_BUNDLE_PATTERN =
-//        "/distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
     private static final String CI_BUNDLE_PATTERN =
-        "/distribution-build-opensearch/[revision]/org/[organization]/artifacts/[artifact]/classifier/[classifier]/module/[module]/revision/[revision]/" +
-            "type/[type]/branch/[branch]/configuration/[conf]/opensearch.[ext]";
+        "/distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
+//    private static final String CI_BUNDLE_PATTERN =
+//        "/distribution-build-opensearch/[revision]/org/[organization]/artifacts/[artifact]/classifier/[classifier]/module/[module]/revision/[revision]/" +
+//            "type/[type]/opensearch.[ext]";
     private static final String RELEASE_BUNDLE_PATTERN = "/bundle/opensearch/[revision]/[module]-[revision](-[classifier]).[ext]";
 
     private NamedDomainObjectContainer<OpenSearchDistribution> distributionsContainer;
