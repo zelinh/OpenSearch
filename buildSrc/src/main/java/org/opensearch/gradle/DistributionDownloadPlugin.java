@@ -81,7 +81,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
     private static final String SNAPSHOT_PATTERN_LAYOUT =
         "/snapshots/core/opensearch/[revision]/[module]-min-[revision](-[classifier])-latest.[ext]";
     private static final String CI_BUNDLE_PATTERN =
-        "/distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
+        "/ci/dbc/distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
 //    private static final String CI_BUNDLE_PATTERN =
 //        "/distribution-build-opensearch/[revision]/org/[organization]/artifacts/[artifact]/classifier/[classifier]/module/[module]/revision/[revision]/" +
 //            "type/[type]/opensearch.[ext]";
@@ -217,9 +217,9 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
                 DOWNLOAD_REPO_NAME,
                 "https://ci.opensearch.org",
                 FAKE_IVY_GROUP,
-                "/ci/dbc" + CI_BUNDLE_PATTERN
+                CI_BUNDLE_PATTERN
             );
-            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, "/ci/dbc" + CI_BUNDLE_PATTERN);
+            addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, CI_BUNDLE_PATTERN);
             return;
         }
         // checks if custom Distribution Url has been passed by user from plugins
