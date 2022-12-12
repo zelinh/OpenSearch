@@ -210,7 +210,8 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
         Object customDistributionDownloadType = project.findProperty("customDistributionDownloadType");
         // distributionDownloadType is default to be min if is not specified; if it's bundle, it would download the distribution bundle
-        String distributionDownloadType = customDistributionDownloadType == null ? "min" : customDistributionDownloadType.toString().toLowerCase();
+        String distributionDownloadType = customDistributionDownloadType != null &&
+            customDistributionDownloadType.toString().equals("bundle") ? "bundle" : "min";
         System.out.println("********************distributionDownloadType***************************" + distributionDownloadType);
         switch (distributionDownloadType) {
             case "bundle":
