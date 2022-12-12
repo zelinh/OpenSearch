@@ -211,8 +211,8 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         Object customDistributionDownloadType = project.findProperty("customDistributionDownloadType");
         // distributionDownloadType is default to be min if is not specified; if it's bundle, it would download the distribution bundle
         String distributionDownloadType = customDistributionDownloadType == null ? "min" : customDistributionDownloadType.toString().toLowerCase();
+        System.out.println("********************distributionDownloadType***************************" + distributionDownloadType);
         switch (distributionDownloadType) {
-            System.out.println("********************distributionDownloadType***************************" + distributionDownloadType);
             case "bundle":
                 addIvyRepo(
                     project,
