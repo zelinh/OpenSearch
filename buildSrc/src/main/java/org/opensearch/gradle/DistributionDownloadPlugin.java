@@ -80,7 +80,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
     private static final String RELEASE_PATTERN_LAYOUT = "/core/opensearch/[revision]/[module]-min-[revision](-[classifier]).[ext]";
     private static final String SNAPSHOT_PATTERN_LAYOUT =
         "/snapshots/core/opensearch/[revision]/[module]-min-[revision](-[classifier])-latest.[ext]";
-    private static final String CI_BUNDLE_PATTERN =
+    private static final String BUNDLE_PATTERN_LAYOUT =
         "/ci/dbc/distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
 //    private static final String CI_BUNDLE_PATTERN =
 //        "/distribution-build-opensearch/[revision]/org/[organization]/artifacts/[artifact]/classifier/[classifier]/module/[module]/revision/[revision]/" +
@@ -206,39 +206,39 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
             return;
         }
         Object customDistributionUrl = project.findProperty("customDistributionUrl");
-        Object bundleDownload = project.findProperty("bundleDownload");
-        boolean bundleBoolean = bundleDownload != null && Boolean.parseBoolean(bundleDownload.toString());
         Object customDistributionDownloadType = project.findProperty("customDistributionDownloadType");
-        // distributionDownloadType is default to be min if is not specified; if it's bundle, it would download the distribution bundle
-        String distributionDownloadType = customDistributionDownloadType != null &&
-            customDistributionDownloadType.toString().equals("bundle") ? "bundle" : "min";
-        System.out.println("********************distributionDownloadType***************************" + distributionDownloadType);
+        // distributionDownloadType is default min if is not specified; download the distribution from CI if is bundle
+        String distributionDownloadType = customDistributionDownloadType != null
+            && customDistributionDownloadType.toString().equals("bundle") ? "bundle" : "min";
+        if (customDistributionUrl != null) {
+            addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrl.toString(), FAKE_IVY_GROUP, "");
+            addIvyRepo(project, SNAPSHOT_REPO_NAME, customDistributionUrl.toString(), FAKE_SNAPSHOT_IVY_GROUP, "");
+            return;
+        }
         switch (distributionDownloadType) {
             case "bundle":
+                addIvyRepo(project, DOWNLOAD_REPO_NAME, "https://ci.opensearch.org", FAKE_IVY_GROUP, BUNDLE_PATTERN_LAYOUT);
+                addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, BUNDLE_PATTERN_LAYOUT);
+                break;
+            case "min":
                 addIvyRepo(
                     project,
                     DOWNLOAD_REPO_NAME,
-                    "https://ci.opensearch.org",
+                    "https://artifacts.opensearch.org",
                     FAKE_IVY_GROUP,
-                    CI_BUNDLE_PATTERN
+                    "/releases" + RELEASE_PATTERN_LAYOUT,
+                    "/release-candidates" + RELEASE_PATTERN_LAYOUT
                 );
-                addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, CI_BUNDLE_PATTERN);
-                return;
-            case "min":
-                if (customDistributionUrl != null) {
-                    addIvyRepo(project, DOWNLOAD_REPO_NAME, customDistributionUrl.toString(), FAKE_IVY_GROUP, "");
-                    addIvyRepo(project, SNAPSHOT_REPO_NAME, customDistributionUrl.toString(), FAKE_SNAPSHOT_IVY_GROUP, "");
-                } else {
-                    addIvyRepo(
-                        project,
-                        DOWNLOAD_REPO_NAME,
-                        "https://artifacts.opensearch.org",
-                        FAKE_IVY_GROUP,
-                        "/releases" + RELEASE_PATTERN_LAYOUT,
-                        "/release-candidates" + RELEASE_PATTERN_LAYOUT
-                    );
-                    addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://artifacts.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, SNAPSHOT_PATTERN_LAYOUT);
-                }
+                addIvyRepo(
+                    project,
+                    SNAPSHOT_REPO_NAME,
+                    "https://artifacts.opensearch.org",
+                    FAKE_SNAPSHOT_IVY_GROUP,
+                    SNAPSHOT_PATTERN_LAYOUT
+                );
+                break;
+            default:
+                throw new IllegalArgumentException("Unsupported property argument: " + distributionDownloadType);
         }
         addIvyRepo2(project, DOWNLOAD_REPO_NAME_ES, "https://artifacts-no-kpi.elastic.co", FAKE_IVY_GROUP_ES);
         addIvyRepo2(project, SNAPSHOT_REPO_NAME_ES, "https://snapshots-no-kpi.elastic.co", FAKE_SNAPSHOT_IVY_GROUP_ES);
