@@ -82,10 +82,7 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         "/snapshots/core/opensearch/[revision]/[module]-min-[revision](-[classifier])-latest.[ext]";
     private static final String BUNDLE_PATTERN_LAYOUT =
         "/ci/dbc/distribution-build-opensearch/[revision]/latest/linux/x64/tar/dist/opensearch/[module]-[revision](-[classifier]).[ext]";
-//    private static final String CI_BUNDLE_PATTERN =
-//        "/distribution-build-opensearch/[revision]/org/[organization]/artifacts/[artifact]/classifier/[classifier]/module/[module]/revision/[revision]/" +
-//            "type/[type]/opensearch.[ext]";
-    private static final String RELEASE_BUNDLE_PATTERN = "/bundle/opensearch/[revision]/[module]-[revision](-[classifier]).[ext]";
+    private static final String RELEASE_BUNDLE_PATTERN = "/releases/bundle/opensearch/[revision]/[module]-[revision](-[classifier]).[ext]";
 
     private NamedDomainObjectContainer<OpenSearchDistribution> distributionsContainer;
     private NamedDomainObjectContainer<DistributionResolution> distributionsResolutionStrategiesContainer;
@@ -171,9 +168,6 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
     }
 
     private static void addIvyRepo(Project project, String name, String url, String group, String... patternLayout) {
-        System.out.println("*********************version**************************" + project.getVersion());
-        System.out.println("******************patternLayout*****************************" + patternLayout[0]);
-        System.out.println("*****************Repository******************************" + project.getRepositories());
 
         final List<IvyArtifactRepository> repos = Arrays.stream(patternLayout).map(pattern -> project.getRepositories().ivy(repo -> {
             repo.setName(name);
@@ -181,7 +175,6 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
             repo.metadataSources(IvyArtifactRepository.MetadataSources::artifact);
             repo.patternLayout(layout -> layout.artifact(pattern));
         })).collect(Collectors.toList());
-        System.out.println("*******************group****************************" + group);
         project.getRepositories().exclusiveContent(exclusiveContentRepository -> {
             exclusiveContentRepository.filter(config -> config.includeGroup(group));
             exclusiveContentRepository.forRepositories(repos.toArray(new IvyArtifactRepository[repos.size()]));
@@ -217,8 +210,10 @@ public class DistributionDownloadPlugin implements Plugin<Project> {
         }
         switch (distributionDownloadType) {
             case "bundle":
-                addIvyRepo(project, DOWNLOAD_REPO_NAME, "https://ci.opensearch.org", FAKE_IVY_GROUP, BUNDLE_PATTERN_LAYOUT);
-                addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, BUNDLE_PATTERN_LAYOUT);
+//                addIvyRepo(project, DOWNLOAD_REPO_NAME, "https://ci.opensearch.org", FAKE_IVY_GROUP, BUNDLE_PATTERN_LAYOUT);
+//                addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://ci.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, BUNDLE_PATTERN_LAYOUT);
+                addIvyRepo(project, DOWNLOAD_REPO_NAME, "https://artifacts.opensearch.org", FAKE_IVY_GROUP, RELEASE_BUNDLE_PATTERN);
+                addIvyRepo(project, SNAPSHOT_REPO_NAME, "https://artifacts.opensearch.org", FAKE_SNAPSHOT_IVY_GROUP, RELEASE_BUNDLE_PATTERN);
                 break;
             case "min":
                 addIvyRepo(
